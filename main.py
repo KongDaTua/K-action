@@ -91,7 +91,7 @@ def get_iciba_everyday():
     bee = eed.json()  # 返回的数据
     english = bee['content']
     zh_CN = bee['note']
-    str = '【奇怪的知识】\n'+ zh_CN
+    str = english + '\n'+ zh_CN
     return str
 
 
@@ -123,7 +123,7 @@ def getWeather():
             tdwt = "【今日份天气】\n城市：" + parent + city + \
                    "\n日期：" + date + "\n星期: " + week + "\n天气: " + weather_type + "\n温度: " + wendu_high + " / " + wendu_low + "\n湿度: " + \
                    shidu + "\n空气质量: " + quality + \
-                   "\n风力风向: " + fx + fl + "\n感冒指数: " + ganmao + "\n更新时间: " + update_time + "\n✁-----------------------------------------\n" + get_iciba_everyday()
+                   "\n风力风向: " + fx + fl + "\n感冒指数: " + ganmao + "\n更新时间: " + update_time + "\n✁---------------------------------------\n" + get_iciba_everyday()
             print(tdwt)
             return tdwt
     except Exception:
