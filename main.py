@@ -21,68 +21,68 @@ class SendMsg():
         return access_token
 
 
-def get_openid(self):
-    next_openid = ''
-    url_openid = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token={}&next_openid={}'.format(self.access_token,
-                                                                                                    next_openid)
-    ans = requests.get(url_openid)
-    print(ans.content)
-    open_ids = json.loads(ans.content)['data']['openid']
-    return open_ids
+    def get_openid(self):
+        next_openid = ''
+        url_openid = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token={}&next_openid={}'.format(self.access_token,
+                                                                                                        next_openid)
+        ans = requests.get(url_openid)
+        print(ans.content)
+        open_ids = json.loads(ans.content)['data']['openid']
+        return open_ids
 
 
-def sendmsg(self, msg):
-    """
-    给所有粉丝发送文本消息
-    """
-    url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={}".format(self.access_token)
-    print(url)
-    if self.opend_ids != '':
-        for open_id in self.opend_ids:
-            body = {
-                "touser": open_id,
-                "msgtype": "text",
-                "text":
-                    {
-                        "content": msg
-                    }
-            }
-            data = bytes(json.dumps(body, ensure_ascii=False).encode('utf-8'))
-            print(data)
-            response = requests.post(url, data=data)
-            # 这里可根据回执code进行判定是否发送成功(也可以根据code根据错误信息)
-            result = response.json()
-            print(result)
-    else:
-        print("当前没有用户关注该公众号！")
-
-
-def sendTemplate(self, msg):
-    url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(self.access_token)
-    print(url)
-    if self.opend_ids != '':
-        for open_id in self.opend_ids:
-            body = {
-                "touser": open_id,
-                "template_id": os.environ.get('TID'),
-                "url": "http://weixin.qq.com/download",
-                "topcolor": "#999999",
-                "data":
-                    {
-                        "content": {
-                            "value": msg,
-                            "color": "#666666"
+    def sendmsg(self, msg):
+        """
+        给所有粉丝发送文本消息
+        """
+        url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={}".format(self.access_token)
+        print(url)
+        if self.opend_ids != '':
+            for open_id in self.opend_ids:
+                body = {
+                    "touser": open_id,
+                    "msgtype": "text",
+                    "text":
+                        {
+                            "content": msg
                         }
-                    }
-            }
-            data = bytes(json.dumps(body, ensure_ascii=False).encode('utf-8'))
-            print(data)
-            response = requests.post(url, data=data)
-            # 这里可根据回执code进行判定是否发送成功(也可以根据code根据错误信息)
-            result = response.json()
-            print(result)
-    else:
-        print("当前没有用户关注该公众号！")
+                }
+                data = bytes(json.dumps(body, ensure_ascii=False).encode('utf-8'))
+                print(data)
+                response = requests.post(url, data=data)
+                # 这里可根据回执code进行判定是否发送成功(也可以根据code根据错误信息)
+                result = response.json()
+                print(result)
+        else:
+            print("当前没有用户关注该公众号！")
+
+
+    def sendTemplate(self, msg):
+        url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(self.access_token)
+        print(url)
+        if self.opend_ids != '':
+            for open_id in self.opend_ids:
+                body = {
+                    "touser": open_id,
+                    "template_id": os.environ.get('TID'),
+                    "url": "http://weixin.qq.com/download",
+                    "topcolor": "#999999",
+                    "data":
+                        {
+                            "content": {
+                                "value": msg,
+                                "color": "#666666"
+                            }
+                        }
+                }
+                data = bytes(json.dumps(body, ensure_ascii=False).encode('utf-8'))
+                print(data)
+                response = requests.post(url, data=data)
+                # 这里可根据回执code进行判定是否发送成功(也可以根据code根据错误信息)
+                result = response.json()
+                print(result)
+        else:
+            print("当前没有用户关注该公众号！")
 
 
 def get_iciba_everyday():
@@ -132,5 +132,5 @@ def getWeather():
         print(Exception)
 if __name__ == "__main__":
     data = getWeather()
-    sends = SendMessage()
+    sends = SendMsg()
     sends.sendTemplate(data)
