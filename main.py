@@ -95,7 +95,7 @@ def get_iciba_everyday():
 
 def get_caihongpi():
     try:
-        key = os.environ.get('SERVERKEY')
+        key = os.environ.get('TIANXING_KEY')
         api = 'http://api.tianapi.com/caihongpi/index?key=' + key
         resp = requests.post(api)
         data = resp.json()
