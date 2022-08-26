@@ -99,11 +99,14 @@ def get_caihongpi():
         api = 'http://api.tianapi.com/caihongpi/index?key=' + key
         resp = requests.post(api)
         data = resp.json()
+        print(data)
         if (data['code'] == 200):
-            return data['newslist']['content']
+            res = data['newslist'][0]['content']
+            return res
     except Exception:
         print("【ERROR】彩虹屁请求失败")
         print(Exception)
+
 
 def getWeather():
     try:
@@ -142,6 +145,7 @@ def getWeather():
                    "\n更新时间: " + update_time + \
                    "\n✁---------------------------------------\n" + \
                    get_caihongpi()
+            print(tdwt)
             return tdwt
     except Exception:
         error = '【出现错误】\n　　今日天气推送错误，请检查服务或网络状态！'
@@ -153,4 +157,3 @@ if __name__ == "__main__":
     data = getWeather()
     sends = SendMsg()
     sends.sendTemplate(data)
-
