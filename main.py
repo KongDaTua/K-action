@@ -1,4 +1,4 @@
-import requests,json
+import requests, json
 import os
 
 
@@ -16,20 +16,19 @@ class SendMsg():
             self.appID, self.appsecret)
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36'}
-        response = requests.get(url,headers = headers).json()
+        response = requests.get(url, headers=headers).json()
         access_token = response.get('access_token')
         return access_token
 
-
     def get_openid(self):
         next_openid = ''
-        url_openid = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token={}&next_openid={}'.format(self.access_token,
-                                                                                                        next_openid)
+        url_openid = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token={}&next_openid={}'.format(
+            self.access_token,
+            next_openid)
         ans = requests.get(url_openid)
         print(ans.content)
         open_ids = json.loads(ans.content)['data']['openid']
         return open_ids
-
 
     def sendmsg(self, msg):
         """
@@ -55,7 +54,6 @@ class SendMsg():
                 print(result)
         else:
             print("当前没有用户关注该公众号！")
-
 
     def sendTemplate(self, msg):
         url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(self.access_token)
@@ -91,8 +89,9 @@ def get_iciba_everyday():
     bee = eed.json()  # 返回的数据
     english = bee['content']
     zh_CN = bee['note']
-    str = english + '\n'+ zh_CN
+    str = english + '\n' + zh_CN
     return str
+
 
 def get_caihongpi():
     api = 'http://api.tianapi.com/caihongpi/index?key=' + os.environ.get('SERVERKEY')
@@ -129,21 +128,16 @@ def getWeather():
             ganmao = d["data"]["ganmao"]  # 感冒指数
             tips = d["data"]["forecast"][0]["notice"]  # 温馨提示
             # 天气提示内容
-            tdwt = "【今日天气】\n城市：" + parent + city + \
-                   "\n日期：" + date + \
-                   "\n星期: " + week + \
-                   "\n天气: " + weather_type + \
-                   "\n温度: " + wendu_high + " / " + wendu_low + "\n湿度: " + shidu + \
-                   "\n空气质量: " + quality + \
-                   "\n风力风向: " + fx + fl + \
-                   "\n感冒指数: " + ganmao + \
-                   "\n更新时间: " + update_time + \
-                   "\n✁---------------------------------------\n" + get_caihongpi()
+            tdwt = "【今日份天气】\n城市：" + parent + city + \
+                   "\n日期：" + date + "\n星期: " + week + "\n天气: " + weather_type + "\n温度: " + wendu_high + " / " + wendu_low + "\n湿度: " + \
+                   shidu + "\n空气质量: " + quality + \
+                   "\n风力风向: " + fx + fl + "\n感冒指数: " + ganmao + "\n更新时间: " + update_time + "\n✁---------------------------------------\n" + get_caihongpi()
             return tdwt
     except Exception:
         error = '【出现错误】\n　　今日天气推送错误，请检查服务或网络状态！'
         print(error)
         print(Exception)
+
 
 if __name__ == "__main__":
     data = getWeather()
