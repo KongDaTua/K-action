@@ -94,14 +94,16 @@ def get_iciba_everyday():
 
 
 def get_caihongpi():
-    api = 'http://api.tianapi.com/caihongpi/index?key=' + os.environ.get('SERVERKEY')
-    resp = requests.post(api)
-    data = resp.json()
-    if (data['code'] == 200):
-        return data['newslist']['content']
-    else:
+    try:
+        key = os.environ.get('SERVERKEY')
+        api = 'http://api.tianapi.com/caihongpi/index?key=' + key
+        resp = requests.post(api)
+        data = resp.json()
+        if (data['code'] == 200):
+            return data['newslist']['content']
+    except Exception:
         print("【ERROR】彩虹屁请求失败")
-
+        print(Exception)
 
 def getWeather():
     try:
@@ -129,9 +131,17 @@ def getWeather():
             tips = d["data"]["forecast"][0]["notice"]  # 温馨提示
             # 天气提示内容
             tdwt = "【今日份天气】\n城市：" + parent + city + \
-                   "\n日期：" + date + "\n星期: " + week + "\n天气: " + weather_type + "\n温度: " + wendu_high + " / " + wendu_low + "\n湿度: " + \
-                   shidu + "\n空气质量: " + quality + \
-                   "\n风力风向: " + fx + fl + "\n感冒指数: " + ganmao + "\n更新时间: " + update_time + "\n✁---------------------------------------\n" + get_caihongpi()
+                   "\n日期：" + date + \
+                   "\n星期: " + week + \
+                   "\n天气: " + weather_type + \
+                   "\n温度: " + wendu_high + " / " + wendu_low + \
+                   "\n湿度: " + shidu + \
+                   "\n空气质量: " + quality + \
+                   "\n风力风向: " + fx + fl + \
+                   "\n感冒指数: " + ganmao + \
+                   "\n更新时间: " + update_time + \
+                   "\n✁---------------------------------------\n" + \
+                   get_caihongpi()
             return tdwt
     except Exception:
         error = '【出现错误】\n　　今日天气推送错误，请检查服务或网络状态！'
@@ -143,3 +153,4 @@ if __name__ == "__main__":
     data = getWeather()
     sends = SendMsg()
     sends.sendTemplate(data)
+
