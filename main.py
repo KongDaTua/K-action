@@ -154,6 +154,6 @@ def getWeather():
 
 
 if __name__ == "__main__":
-    data = getWeather()
+    data = get_caihongpi()
     sends = SendMsg()
     sends.sendTemplate(data)
